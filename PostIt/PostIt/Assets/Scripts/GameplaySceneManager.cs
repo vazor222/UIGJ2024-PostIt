@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameplaySceneManager : MonoBehaviour
+public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    private static GameplaySceneManager _inst;
+    public static GameplaySceneManager Instance
     {
-        
+        get
+        {
+            if (_inst == null)
+            {
+                _inst = GameObject.FindObjectOfType<GameplaySceneManager>();
+            }
+            return _inst;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //List<Package> 
+
+    //Table
+    //Package spawner
+    //delivery bins
 }
