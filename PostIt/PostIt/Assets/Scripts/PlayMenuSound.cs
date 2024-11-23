@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class MainMenuController : MonoBehaviour
+public class PlayMenuSound : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        // audio is handled in AudioManager since it lives in this scene
+        
     }
 
     // Update is called once per frame
@@ -17,8 +16,12 @@ public class MainMenuController : MonoBehaviour
         
     }
 
-    public void LoadStartMissionScene()
+    public void OnClickPlaySfx(AudioClip audioClip)
     {
-        SceneManager.LoadScene("RoundStart");
+        AudioManager a = FindObjectOfType<AudioManager>();
+        if (a == null)
+            return;
+
+        a.PlaySfx(audioClip);
     }
 }
