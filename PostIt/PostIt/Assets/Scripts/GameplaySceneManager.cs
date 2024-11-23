@@ -17,8 +17,10 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         }
     }
 
-    //List<Package> 
-
+    List<Package> packageEnties = new List<Package>();
+    public List<Package> PackagesOnTable() { 
+        return packageEnties;//TODO implement
+    }
     //Table
     //Package spawner
     //delivery bins

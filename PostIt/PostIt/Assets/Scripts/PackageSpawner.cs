@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public enum ItemType
 {
     Letter,
@@ -13,17 +14,25 @@ public enum ItemType
     Weapon
 }
 
+[Serializable]
+public struct SpawnableObject
+{
+    public ItemType type;
+    public GameObject prefab;
+}
+
 public class PackageSpawner : MonoBehaviour
 {
     [SerializeField]
     private int packagesToSpawn = 5;
     public int CooldownTime = 600;
     private int coolDownRemaining = 0;
-    public Collider spawnZone;
+    public Collider2D spawnZone;
+    [SerializeField]
+    private int SpawnedZPos = 0;
 
     private Dictionary<int, ItemType> weightedSpawnList;
-    [SerializeField]
-    public Dictionary<ItemType, GameObject> SpawnableObjects;
+    public List<SpawnableObject> SpawnableObjects;
 
     public int maxNumPackagesOnTable = 20;
 
@@ -45,6 +54,10 @@ public class PackageSpawner : MonoBehaviour
 
     private bool isReadyToSpawn()
     {
+        if (packagesToSpawn <= 0)
+        {
+            return false;
+        }
         if (coolDownRemaining > 0){//spawn is on cooldown
             return false;
         }
@@ -65,26 +78,33 @@ public class PackageSpawner : MonoBehaviour
         Vector3 spawnPoint = GetRandomSpawnPoint(spawnZone);
         GameObject packageToSpawn = null;
         ItemType type = PickItem();
-        if (!SpawnableObjects.TryGetValue(PickItem(), out packageToSpawn)) {
+        foreach (SpawnableObject spawnableObject in SpawnableObjects) {
+            if (spawnableObject.type == type)
+            {
+                packageToSpawn = spawnableObject.prefab;
+                break;
+            }
+        }
+        if (packageToSpawn is null) {
             Debug.LogError("PackageSpawner:spawnPackage Failed to find game object of type : " 
                 + type + "in SpawnableObjects.");
             return;
         }
-        
+
+        Debug.Log("PackageSpawner:spawnPackage spawning " + type + " -> at " + spawnPoint);
         GameObject entity = Instantiate(packageToSpawn, spawnPoint, Quaternion.identity);
         //TODO Add pkg to list
         //GameplaySceneManager.Instance.AddEntity(entity);
     }
 
-    Vector3 GetRandomSpawnPoint(Collider zone)
+    Vector3 GetRandomSpawnPoint(Collider2D zone)
     {
         Bounds bounds = zone.bounds;
 
         float randomX = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
         float randomY = UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
-        float randomZ = UnityEngine.Random.Range(bounds.min.z, bounds.max.z);
 
-        return new Vector3(randomX, randomY, randomZ);
+        return new Vector3(randomX, randomY, SpawnedZPos);
     }
 
     public ItemType PickItem()
