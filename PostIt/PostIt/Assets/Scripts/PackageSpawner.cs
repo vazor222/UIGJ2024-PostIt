@@ -18,14 +18,14 @@ public enum ItemType
 public struct SpawnableObject
 {
     public ItemType type;
-    public GameObject prefab;
+    public Package prefab;
 }
 
 public class PackageSpawner : MonoBehaviour
 {
     [SerializeField]
     private int packagesToSpawn = 5;
-    public int CooldownTime = 600;
+    public int CooldownTime = 20;
     private int coolDownRemaining = 0;
     public Collider2D spawnZone;
     [SerializeField]
@@ -44,15 +44,15 @@ public class PackageSpawner : MonoBehaviour
     private void FixedUpdate()
     {
         coolDownRemaining -= 1;
-        if (isReadyToSpawn())
+        if (IsReadyToSpawn())
         {
-            spawnPackage();
+            SpawnPackage();
             packagesToSpawn -= 1;
             coolDownRemaining = CooldownTime;
         }
     }
 
-    private bool isReadyToSpawn()
+    private bool IsReadyToSpawn()
     {
         if (packagesToSpawn <= 0)
         {
@@ -68,7 +68,7 @@ public class PackageSpawner : MonoBehaviour
         return true;
     }
 
-    public void spawnPackage()
+    public void SpawnPackage()
     {
         if (spawnZone is null)
         {
@@ -76,7 +76,7 @@ public class PackageSpawner : MonoBehaviour
             return;
         }
         Vector3 spawnPoint = GetRandomSpawnPoint(spawnZone);
-        GameObject packageToSpawn = null;
+        Package packageToSpawn = null;
         ItemType type = PickItem();
         foreach (SpawnableObject spawnableObject in SpawnableObjects) {
             if (spawnableObject.type == type)
@@ -92,9 +92,8 @@ public class PackageSpawner : MonoBehaviour
         }
 
         Debug.Log("PackageSpawner:spawnPackage spawning " + type + " -> at " + spawnPoint);
-        GameObject entity = Instantiate(packageToSpawn, spawnPoint, Quaternion.identity);
-        //TODO Add pkg to list
-        //GameplaySceneManager.Instance.AddEntity(entity);
+        Package entity = Instantiate(packageToSpawn, spawnPoint, Quaternion.identity);
+        GameplaySceneManager.Instance.AddSpawnedPackage(entity);
     }
 
     Vector3 GetRandomSpawnPoint(Collider2D zone)
