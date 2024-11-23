@@ -25,11 +25,11 @@ public class PackageSpawner : MonoBehaviour
 {
     [SerializeField]
     private int packagesToSpawn = 5;
-    public int CooldownTime = 20;
+    public int CooldownTime = 150;
     private int coolDownRemaining = 0;
     public Collider2D spawnZone;
     [SerializeField]
-    private int SpawnedZPos = 0;
+    private int spawnedZPos = 0;
 
     private Dictionary<int, ItemType> weightedSpawnList;
     public List<SpawnableObject> SpawnableObjects;
@@ -92,7 +92,7 @@ public class PackageSpawner : MonoBehaviour
         }
 
         Debug.Log("PackageSpawner:spawnPackage spawning " + type + " -> at " + spawnPoint);
-        Package entity = Instantiate(packageToSpawn, spawnPoint, Quaternion.identity);
+        Package entity = Instantiate(packageToSpawn.gameObject, spawnPoint, Quaternion.identity).GetComponent<Package>();
         GameplaySceneManager.Instance.AddSpawnedPackage(entity);
     }
 
@@ -103,7 +103,7 @@ public class PackageSpawner : MonoBehaviour
         float randomX = UnityEngine.Random.Range(bounds.min.x, bounds.max.x);
         float randomY = UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
 
-        return new Vector3(randomX, randomY, SpawnedZPos);
+        return new Vector3(randomX, randomY, spawnedZPos);
     }
 
     public ItemType PickItem()
