@@ -18,10 +18,16 @@ public class GameManager : MonoBehaviour, ISingleton<GameManager>
     }
 
     public int currentRound = 0;
-    Dictionary<int, int> roundNumToNumPackages = new Dictionary<int, int>{
+    public Dictionary<int, int> roundNumToNumPackages = new Dictionary<int, int>{
         { 1,60 },
         { 2,120 },
         { 3,180 },
+    };
+    //in seconds
+    public Dictionary<int, float> roundNumToRoundLen = new Dictionary<int, float>{
+        { 1,180.0f },
+        { 2,180.0f },
+        { 3,180.0f },
     };
 
     public playerData player1Data = new playerData
