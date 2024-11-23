@@ -45,7 +45,8 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        PlayBGMusic(mainMenuTheme);
+        //PlayBGMusic(mainMenuTheme);
+        PlayBGMusicWithStems(mailRoomTheme, mailRoomLoyalistStem, mailRoomDoubleAgentStem);
     }
 
     void Update()
@@ -83,7 +84,7 @@ public class AudioManager : MonoBehaviour
                 case StemState.StemDoubleAgentFadingIn:
                     if (fadeTimer < FADE_TOTAL_TIME)
                     {
-                        float newVolume = Mathf.Lerp(stemDoubleAgentAudioSource.volume, 1f, fadeTimer / FADE_TOTAL_TIME);
+                        float newVolume = Mathf.Lerp(0f, 1f, fadeTimer / FADE_TOTAL_TIME);
                         stemDoubleAgentAudioSource.volume = newVolume;
                     }
                     else
@@ -96,7 +97,7 @@ public class AudioManager : MonoBehaviour
                 case StemState.StemDoubleAgentFadingOut:
                     if (fadeTimer < FADE_TOTAL_TIME)
                     {
-                        float newVolume = Mathf.Lerp(stemDoubleAgentAudioSource.volume, 0f, fadeTimer / FADE_TOTAL_TIME);
+                        float newVolume = Mathf.Lerp(1f, 0f, fadeTimer / FADE_TOTAL_TIME);
                         stemDoubleAgentAudioSource.volume = newVolume;
                     }
                     else
@@ -109,7 +110,7 @@ public class AudioManager : MonoBehaviour
                 case StemState.StemLoyalistFadingIn:
                     if (fadeTimer < FADE_TOTAL_TIME)
                     {
-                        float newVolume = Mathf.Lerp(stemLoyalistAudioSource.volume, 1f, fadeTimer / FADE_TOTAL_TIME);
+                        float newVolume = Mathf.Lerp(0f, 1f, fadeTimer / FADE_TOTAL_TIME);
                         stemLoyalistAudioSource.volume = newVolume;
                     }
                     else
@@ -122,7 +123,7 @@ public class AudioManager : MonoBehaviour
                 case StemState.StemLoyalistFadingOut:
                     if (fadeTimer < FADE_TOTAL_TIME)
                     {
-                        float newVolume = Mathf.Lerp(stemLoyalistAudioSource.volume, 0f, fadeTimer / FADE_TOTAL_TIME);
+                        float newVolume = Mathf.Lerp(1f, 0f, fadeTimer / FADE_TOTAL_TIME);
                         stemLoyalistAudioSource.volume = newVolume;
                     }
                     else
