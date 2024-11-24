@@ -24,5 +24,10 @@ public class RoundStartController : MonoBehaviour
     public void LoadGameplayMailroomScene()
     {
         SceneManager.LoadScene("MainGameplay");
+        AudioManager a = FindObjectOfType<AudioManager>();
+        if (a != null)
+        {
+            a.PlayBGAmbiance(a.mailRoomFanBackgroundAmbiance);
+        }
     }
 }

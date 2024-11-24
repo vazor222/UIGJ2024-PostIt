@@ -16,16 +16,24 @@ public class AudioManager : MonoBehaviour
     public AudioClip mailRoomLoyalistStem;
     public AudioClip mailRoomDoubleAgentStem;
 
-    public AudioClip packageIncomingSfx;
-    public AudioClip packagePickupSfx;
-    public AudioClip packageDropSfx;
-    public AudioClip packageSortedSfx;
+    public AudioClip mailRoomFanBackgroundAmbiance;
+
+    public AudioClip packageSlideSfx;
+    public AudioClip paperSlideSfx;
+    public AudioClip paperFoldingSfx;
+    public AudioClip countdownSfx;
+    public AudioClip bigExplosionSfx;
+    public AudioClip packageGlass1Sfx;
+    public AudioClip packageGlass2Sfx;
+    public AudioClip packageDrop1Sfx;
+    public AudioClip packageDrop2Sfx;
     public AudioClip stampSfx;
 
     public AudioSource sfxAudioSource;
     public AudioSource backgroundAudioSource;
     public AudioSource stemLoyalistAudioSource;
     public AudioSource stemDoubleAgentAudioSource;
+    public AudioSource backgroundAmbianceAudioSource;
 
     private enum StemState
     {
@@ -140,6 +148,18 @@ public class AudioManager : MonoBehaviour
     public void PlaySfx(AudioClip sfx)
     {
         sfxAudioSource.PlayOneShot(sfx);
+    }
+
+    public void PlayBGAmbiance(AudioClip ambiance)
+    {
+        backgroundAmbianceAudioSource.clip = ambiance;
+        backgroundAmbianceAudioSource.loop = true;
+        backgroundAmbianceAudioSource.Play();
+    }
+
+    public void StopBGAmbiance()
+    {
+        backgroundAmbianceAudioSource.Stop();
     }
 
     public void PlayBGMusic(AudioClip theme)
