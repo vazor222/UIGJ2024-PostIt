@@ -128,6 +128,19 @@ public class Package : MonoBehaviour
     }
 
     public void Land() {
+        AudioManager a = FindObjectOfType<AudioManager>();
+        if (a != null)
+        {
+            float randomValue = UnityEngine.Random.Range(0f, 1f);
+            if (randomValue < 0.5f)
+            {
+                a.PlaySfx(a.packageDrop1Sfx);
+            }
+            else
+            {
+                a.PlaySfx(a.packageDrop2Sfx);
+            }
+        }
         rb.gravityScale = 0;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = 0;
