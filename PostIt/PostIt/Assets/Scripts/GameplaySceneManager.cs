@@ -82,16 +82,82 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (packageEnties.Count > 0)
+            if (packageEnties.Exists(m => m.isOnTable()))
             {
                 // select the next package
-                if (++keyboardPlayerSelectedPackageIndex >= packageEnties.Count)
-                    keyboardPlayerSelectedPackageIndex = 0;
+                do
+                {
+                    if (++keyboardPlayerSelectedPackageIndex >= packageEnties.Count)
+                        keyboardPlayerSelectedPackageIndex = 0;
+                }
+                while (!packageEnties[keyboardPlayerSelectedPackageIndex].isOnTable());
                 Package p = packageEnties[keyboardPlayerSelectedPackageIndex];
 
                 // move the indicator to the package
                 indicator.transform.position = new Vector3(p.transform.position.x, p.transform.position.y+1, 1);
             }
+        }
+
+        if( Input.GetKeyDown(KeyCode.Q) )
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.Hell).slot.transform.position, Destination.Hell);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.notNorthKorea).slot.transform.position, Destination.notNorthKorea);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.Deathstar).slot.transform.position, Destination.Deathstar);
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.Arrakis).slot.transform.position, Destination.Arrakis);
+            // TODO: play sfx
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.TheDump).slot.transform.position, Destination.TheDump);
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.BuildABear).slot.transform.position, Destination.BuildABear);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.Pentagon).slot.transform.position, Destination.Pentagon);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.DonutElem).slot.transform.position, Destination.DonutElem);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.FortBragg).slot.transform.position, Destination.FortBragg);
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.Hospital).slot.transform.position, Destination.Hospital);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.CityHall).slot.transform.position, Destination.CityHall);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.FarmerJo).slot.transform.position, Destination.FarmerJo);
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.BagEnd).slot.transform.position, Destination.BagEnd);
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.NorthPole).slot.transform.position, Destination.NorthPole);
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.YourMom).slot.transform.position, Destination.YourMom);
         }
     }
 
