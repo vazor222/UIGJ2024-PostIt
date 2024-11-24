@@ -19,7 +19,7 @@ public enum Destination
     Hospital,
     CityHall,
     FarmerJo,
-    TheHood,
+    BagEnd,
     NorthPole,
     YourMom,
     Trash
@@ -28,7 +28,7 @@ public enum Destination
 [Serializable]
 public struct MailSlotMarker
 {
-    public Destination location;
+    public Destination type;
     public GameObject slot;
 }
 

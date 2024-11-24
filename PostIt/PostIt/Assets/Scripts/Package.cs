@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,8 +8,7 @@ using UnityEngine.XR;
 [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Collider2D))]
 public class Package : MonoBehaviour
 {
-    public static int sortingLayerStart = 1;
-    private static int currentSortingOrder = 0;
+    private static int currentSortingOrder = 10;
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
@@ -55,6 +55,7 @@ public class Package : MonoBehaviour
         isBeingDragged = true;
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pickupOffset = transform.position - mousePosition;
+        spriteRenderer.sortingOrder = 5;
     }
 
     void OnMouseDrag()
@@ -65,8 +66,16 @@ public class Package : MonoBehaviour
             if (mousePosition.y < tableYPosition) {
                 mousePosition.y = tableYPosition;
             }
-            transform.position = mousePosition + pickupOffset;
-            //TODO detect if in slot
+            mousePosition = mousePosition + pickupOffset;
+            foreach (MailSlotMarker mailSlot in GameplaySceneManager.Instance.mailSlotMarkers)
+            {
+                if (Vector2.Distance(mailSlot.slot.transform.position, mousePosition) <= 1)
+                {
+                    mousePosition = mailSlot.slot.transform.position;
+                }
+            }
+            transform.position = mousePosition;
+            rb.angularVelocity = 0;
         }
     }
 
@@ -79,10 +88,18 @@ public class Package : MonoBehaviour
         {
             currentPosition.y = tableYPosition;
         }
+        foreach (MailSlotMarker mailSlot in GameplaySceneManager.Instance.mailSlotMarkers)
+        {
+            if (Vector2.Distance(mailSlot.slot.transform.position, currentPosition) <= 1)
+            {
+                currentPosition = mailSlot.slot.transform.position;
+                //TODO inform that this mail is in this slot
+            }
+        }
         transform.position = currentPosition;
 
         rb.gravityScale = gravity;
-        //TODO Place in box
+        spriteRenderer.sortingOrder = currentSortingOrder;
     }
     #endregion
 }
