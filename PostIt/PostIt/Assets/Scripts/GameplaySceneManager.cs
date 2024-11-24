@@ -363,7 +363,21 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         AudioManager a = FindObjectOfType<AudioManager>();
         if (a != null)
         {
-            //TODO calc score and update if needed
+            // calc score and update if needed
+            int doubleAgentScore = playerDataDict[PlayerType.Keyboard].correctlyDeliveredPackages + playerDataDict[PlayerType.Keyboard].secretMissionPackages * 5 - playerDataDict[PlayerType.Keyboard].misdeliveredPackages;
+            int loyalistScore = playerDataDict[PlayerType.Mouse].correctlyDeliveredPackages + playerDataDict[PlayerType.Mouse].secretMissionPackages * 5 - playerDataDict[PlayerType.Mouse].misdeliveredPackages;
+            if (doubleAgentScore > loyalistScore)
+            {
+                a.StartDoubleAgentStem();
+            }
+            else if( doubleAgentScore < loyalistScore )
+            {
+                a.StartLoyalistStem();
+            }
+            else
+            {
+                a.StopStem();
+            }
         }
     }
 
