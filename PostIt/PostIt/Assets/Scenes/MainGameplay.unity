@@ -1185,6 +1185,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f58879f1a2636543881bd8292d90219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mailSlotMarkers:
+  - location: 0
+    slot: {fileID: 524227984}
+  - location: 1
+    slot: {fileID: 415209879}
+  - location: 2
+    slot: {fileID: 1799921482}
+  - location: 3
+    slot: {fileID: 431391053}
+  - location: 4
+    slot: {fileID: 432265352}
+  - location: 5
+    slot: {fileID: 432265352}
+  - location: 6
+    slot: {fileID: 432265352}
+  - location: 7
+    slot: {fileID: 432265352}
+  - location: 8
+    slot: {fileID: 432265352}
+  - location: 9
+    slot: {fileID: 432265352}
+  - location: 10
+    slot: {fileID: 432265352}
+  - location: 11
+    slot: {fileID: 432265352}
+  - location: 12
+    slot: {fileID: 432265352}
+  - location: 13
+    slot: {fileID: 432265352}
+  - location: 14
+    slot: {fileID: 432265352}
 --- !u!1 &2055274928
 GameObject:
   m_ObjectHideFlags: 0

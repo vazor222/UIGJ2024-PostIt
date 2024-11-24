@@ -14,24 +14,6 @@ public enum ItemType
     Weapon
 }
 
-public enum Destination { 
-    Hell,
-    notNorthKorea,
-    Deathstar,
-    Arrakis,
-    TheDump,
-    BuildABear,
-    DonutElem,
-    MotherLand,
-    Hospital,
-    CityHall,
-    FarmerJo,
-    TheHood,
-    NorthPole,
-    YourMom,
-    Trash
-}
-
 [Serializable]
 public struct SpawnableObject
 {

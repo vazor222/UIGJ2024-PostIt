@@ -4,6 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
+
+public enum Destination
+{
+    Hell,
+    notNorthKorea,
+    Deathstar,
+    Arrakis,
+    TheDump,
+    BuildABear,
+    FireDept,
+    DonutElem,
+    MotherLand,
+    Hospital,
+    CityHall,
+    FarmerJo,
+    TheHood,
+    NorthPole,
+    YourMom,
+    Trash
+}
+
+[Serializable]
+public struct MailSlotMarker
+{
+    public Destination location;
+    public GameObject slot;
+}
+
 public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManager>
 {
     private static GameplaySceneManager _inst;
@@ -20,6 +48,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public Collider2D TableCollider { get; internal set; }
+    public List<MailSlotMarker> mailSlotMarkers;
 
     int currentRound = 0;
     private float roundStart;

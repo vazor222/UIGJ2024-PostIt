@@ -62,7 +62,6 @@ public class Package : MonoBehaviour
         if (isBeingDragged)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 5;
             if (mousePosition.y < tableYPosition) {
                 mousePosition.y = tableYPosition;
             }
@@ -76,7 +75,6 @@ public class Package : MonoBehaviour
         isBeingDragged = false;
 
         Vector3 currentPosition = transform.position;
-        currentPosition.z = 0;
         if (currentPosition.y < tableYPosition)
         {
             currentPosition.y = tableYPosition;
