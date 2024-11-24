@@ -62,11 +62,12 @@ public class Package : MonoBehaviour
         if (isBeingDragged)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 0;
+            mousePosition.z = 2;
             if (mousePosition.y < tableYPosition) {
                 mousePosition.y = tableYPosition;
             }
             transform.position = mousePosition + pickupOffset;
+            //TODO detect if in slot
         }
     }
 
@@ -75,6 +76,7 @@ public class Package : MonoBehaviour
         isBeingDragged = false;
 
         Vector3 currentPosition = transform.position;
+        currentPosition.z = 0;
         if (currentPosition.y < tableYPosition)
         {
             currentPosition.y = tableYPosition;
