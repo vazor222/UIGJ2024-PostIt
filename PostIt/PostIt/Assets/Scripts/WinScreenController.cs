@@ -15,7 +15,10 @@ public class WinScreenController : MonoBehaviour
         if( GameManager.Instance.player1Data.secretMissionPackages > GameManager.Instance.player1Data.correctlyDeliveredPackages )
         {
             if( a != null )
+            {
                 a.PlayBGMusic(a.doubleAgentWinScreenTheme);
+                a.PlaySfx(a.bigExplosionSfx);
+            }
             doubleAgentWinScreenBG.SetActive(true);
             loyalistWinScreenBG.SetActive(false);
         }
