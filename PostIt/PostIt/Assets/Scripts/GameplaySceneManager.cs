@@ -28,6 +28,13 @@ public enum Destination
 }
 
 [Serializable]
+public struct DestinationPair
+{
+    public Destination destination;
+    public Destination secretDestination;
+}
+
+[Serializable]
 public struct MailSlotMarker
 {
     public Destination type;
@@ -51,7 +58,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
 
     public Collider2D TableCollider { get; internal set; }
     public List<MailSlotMarker> mailSlotMarkers;
-    public Dictionary<Destination, List<Package>> MailInSlots;
+    public Dictionary<Destination, List<Package>> MailInSlots = new Dictionary<Destination, List<Package>>();
 
     int currentRound = 0;
     private float roundStart;
@@ -120,6 +127,74 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             oldPackage.ReduceSortOrder();
         }
         packageList.Add(package);
+    }
+
+    public DestinationPair GetNextDestinationPair()
+    {
+        //TODO
+        return new DestinationPair { destination = Destination.none, secretDestination = Destination.none };
+    }
+
+    internal int GetDestinationCol(Destination destination)
+    {
+        switch (destination)
+        {
+            case Destination.Hell:
+            case Destination.BuildABear:
+            case Destination.CityHall:
+                return 0;
+            case Destination.notNorthKorea:
+            case Destination.Pentagon:
+            case Destination.FarmerJo:
+                return 1;
+            case Destination.Deathstar:
+            case Destination.DonutElem:
+            case Destination.BagEnd:
+                return 2;
+            case Destination.Arrakis:
+            case Destination.FortBragg:
+            case Destination.NorthPole:
+                return 3;
+            case Destination.TheDump:
+            case Destination.Hospital:
+            case Destination.YourMom:
+                return 4;
+            case Destination.Trash:
+                Debug.LogError("trash is not a valid destination for package color");
+                return 0;
+        }
+        Debug.LogError(" destination not found for package color");
+        return 0;
+    }
+
+    internal int GetDestinationRow(Destination destination)
+    {
+        switch (destination)
+        {
+            case Destination.Hell:
+            case Destination.notNorthKorea:
+            case Destination.Deathstar:
+            case Destination.Arrakis:
+            case Destination.TheDump:
+                return 0;
+            case Destination.BuildABear:
+            case Destination.Pentagon:
+            case Destination.DonutElem:
+            case Destination.FortBragg:
+            case Destination.Hospital:
+                return 1;
+            case Destination.CityHall:
+            case Destination.FarmerJo:
+            case Destination.BagEnd:
+            case Destination.NorthPole:
+            case Destination.YourMom:
+                return 2;
+            case Destination.Trash:
+                Debug.LogError("trash is not a valid destination for package symbol location");
+                break;
+        }
+        Debug.LogError(" destination not found for package symbol location");
+        return 2;
     }
 
     //Table

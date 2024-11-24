@@ -80,11 +80,33 @@ public class PackageSpawner : MonoBehaviour
         }
         Vector3 spawnPoint = GetRandomSpawnPoint(spawnZone);
         Package packageToSpawn = null;
+        Sprite colorSprite = null;
+        Sprite symbolSprite = null;
+        DestinationPair dest = new DestinationPair { destination = Destination.none, secretDestination = Destination.none };
+        int row = 0;
+        int col = 0;
         ItemType type = PickItem();
         foreach (SpawnableObject spawnableObject in SpawnableObjects) {
             if (spawnableObject.type == type)
             {
                 packageToSpawn = spawnableObject.prefab;
+
+                symbolSprite = spawnableObject.Symbols[0];
+                dest = GameplaySceneManager.Instance.GetNextDestinationPair();
+                if (dest.destination == Destination.none) { 
+                    Debug.LogError("PackageSpawner:spawnPackage Failed to find next destination");
+                }
+                row = GameplaySceneManager.Instance.GetDestinationRow(dest.destination);
+                col = GameplaySceneManager.Instance.GetDestinationCol(dest.destination);
+                colorSprite = spawnableObject.Colors[col];
+                if (dest.secretDestination == Destination.none)
+                {
+                    symbolSprite = spawnableObject.Symbols[0];
+                }
+                else
+                {
+                    symbolSprite = spawnableObject.Symbols[1];//TODO set symbol based on specific secret dest
+                }
                 break;
             }
         }
@@ -93,9 +115,22 @@ public class PackageSpawner : MonoBehaviour
                 + type + "in SpawnableObjects.");
             return;
         }
+        if (colorSprite is null)
+        {
+            Debug.LogError("PackageSpawner:spawnPackage Failed to find colorSprite of type : "
+                + type + "in SpawnableObjects.");
+            return;
+        }
+        if (symbolSprite is null)
+        {
+            Debug.LogError("PackageSpawner:spawnPackage Failed to find symbolSprite of type : "
+                + type + "in SpawnableObjects.");
+            return;
+        }
 
         Debug.Log("PackageSpawner:spawnPackage spawning " + type + " -> at " + spawnPoint);
         Package entity = Instantiate(packageToSpawn.gameObject, spawnPoint, Quaternion.identity).GetComponent<Package>();
+        entity.SetIntendedDestination(colorSprite, symbolSprite, row, dest.destination, dest.secretDestination);
         GameplaySceneManager.Instance.AddSpawnedPackage(entity);
     }
 
