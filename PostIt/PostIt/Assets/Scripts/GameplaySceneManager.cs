@@ -268,11 +268,20 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             DestroySpawnedPackage(package);
             return;
         }
-        if (type == Destination.Arrakis) {
+        if (type == Destination.Arrakis)
+        {
             AudioManager a = FindObjectOfType<AudioManager>();
             if (a != null)
             {
                 a.PlaySfx(a.arrakisSfx);
+            }
+        }
+        else
+        {
+            AudioManager a = FindObjectOfType<AudioManager>();
+            if (a != null)
+            {
+                a.PlaySfx(a.paperSlideSfx);
             }
         }
         List<Package> packageList;

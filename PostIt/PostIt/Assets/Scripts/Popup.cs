@@ -14,6 +14,11 @@ public class Popup : MonoBehaviour
 
     public IEnumerator ShowTextForTime(float time)
     {
+        AudioManager a = FindObjectOfType<AudioManager>();
+        if (a != null)
+        {
+            a.PlaySfx(a.paperSlideSfx);
+        }
         isDisplayed = true;
         gameObject.SetActive(true);
 
