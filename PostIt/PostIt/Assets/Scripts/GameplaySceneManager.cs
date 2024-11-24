@@ -114,7 +114,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             {
                 continue;
             }
-            if (package.isOnTable()) {
+            if (package.IsOnTable()) {
                 result.Add(package);
             }
         }
