@@ -103,7 +103,8 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             }
         },
     };
-    
+
+
     private void Start()
     {/*
         roundStart = Time.time;
@@ -229,6 +230,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public void endRound() {
+        GameManager.Instance.playerDataDict = playerDataDict;
         SceneManager.LoadScene("RoundEnd");
     }
 

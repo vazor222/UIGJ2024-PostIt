@@ -16,6 +16,10 @@ public class GameManager : MonoBehaviour, ISingleton<GameManager>
             return _inst;
         }
     }
+    void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     public int currentRound = 0;
     public Dictionary<int, int> roundNumToNumPackages = new Dictionary<int, int>{
@@ -30,11 +34,22 @@ public class GameManager : MonoBehaviour, ISingleton<GameManager>
         { 3,180.0f },
     };
 
-    public PlayerData player1Data = new PlayerData
-    {
-        secretMissionPackages = 0,
-        misdeliveredPackages = 0,
-        correctlyDeliveredPackages = 0
+
+    public Dictionary<PlayerType, PlayerData> playerDataDict = new Dictionary<PlayerType, PlayerData> {
+        { PlayerType.Keyboard ,
+            new PlayerData{
+                secretMissionPackages = 0,
+                misdeliveredPackages = 0,
+                correctlyDeliveredPackages = 0
+            }
+        },
+        { PlayerType.Mouse ,
+            new PlayerData{
+                secretMissionPackages = 0,
+                misdeliveredPackages = 0,
+                correctlyDeliveredPackages = 0
+            }
+        },
     };
 }
 
