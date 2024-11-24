@@ -28,10 +28,17 @@ public enum Destination
     Trash
 }
 
+[Serializable]
 public enum PlayerType { 
     None,
     Keyboard,
     Mouse
+}
+
+public struct MisdeliveredPopups
+{
+    public PlayerType player;
+    public GameObject popup;
 }
 
 [Serializable]
@@ -76,6 +83,8 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     private IndicatorBounce indicator;
     int keyboardPlayerSelectedPackageIndex = -1;
 
+
+
     public Dictionary<PlayerType, PlayerData> playerDataDict = new Dictionary<PlayerType, PlayerData> {
         { PlayerType.Keyboard , 
             new PlayerData{
@@ -108,6 +117,11 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         }
         roundEnd = roundStart + roundLen;*/
         indicator = FindObjectOfType<IndicatorBounce>();
+
+        AudioManager a = FindObjectOfType<AudioManager>();
+        if (a != null) {
+            a.PlayBGMusicWithStems(a.mailRoomTheme, a.mailRoomLoyalistStem, a.mailRoomDoubleAgentStem);
+        }
     }
 
     void Update()
@@ -248,7 +262,6 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public void HandleMailPlacedInSlot(Destination type, Package package, PlayerType player) {
-        
         if (type == Destination.Trash) {
             DestroySpawnedPackage(package);
             return;
@@ -288,6 +301,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         else {
             playerData.misdeliveredPackages += 1;
         }
+        UpdateWinningAudio();
         packageList.Add(package);
     }
 
@@ -322,7 +336,16 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         {
             playerData.misdeliveredPackages -= 1;
         }
+        UpdateWinningAudio();
+    }
 
+    public void UpdateWinningAudio() {
+        
+        AudioManager a = FindObjectOfType<AudioManager>();
+        if (a != null)
+        {
+            //TODO calc score and update if needed
+        }
     }
 
     public DestinationPair GetNextDestinationPair()
