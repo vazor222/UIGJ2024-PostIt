@@ -177,11 +177,7 @@ public class Package : MonoBehaviour
             if (Vector2.Distance(mailSlot.slot.transform.position, currentPosition) <= 1)
             {
                 currentPosition = mailSlot.slot.transform.position;
-                transform.position = currentPosition;
-                gameObject.layer = 6;
-                Land();
-                inSlot = true;
-                GameplaySceneManager.Instance.HandleMailPlacedInSlot(mailSlot.type, this);
+                PlaceInSlot(currentPosition, mailSlot.type);
                 return;
             }
         }
@@ -192,4 +188,14 @@ public class Package : MonoBehaviour
         gameObject.layer = 0;
     }
     #endregion
+
+    public void PlaceInSlot(Vector2 currentPosition, Destination type)
+    {
+        transform.position = currentPosition;
+        gameObject.layer = 6;
+        Land();
+        inSlot = true;
+        GameplaySceneManager.Instance.HandleMailPlacedInSlot(type, this);
+
+    }
 }
