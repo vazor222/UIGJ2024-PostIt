@@ -284,6 +284,40 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         packageList.Add(package);
     }
 
+
+    internal void HandleMailRemovedfromSlot(Package package, Destination slot, PlayerType previousPlacedBy)
+    {
+        List<Package> packageList;
+        if (!MailInSlots.TryGetValue(slot, out packageList))
+        {
+            Debug.LogError("attempted to remove package from " + slot + ",destination had nothing in it");
+            return;
+        }
+        packageList.Remove(package);
+        PlayerData playerData;
+        if (!playerDataDict.TryGetValue(previousPlacedBy, out playerData))
+        {
+            Debug.LogError("player score not found in playerDataDict, score not tracked");
+            packageList.Add(package);
+            return;
+        }
+
+        if (package.Destination == slot)
+        {
+            playerData.correctlyDeliveredPackages -= 1;
+
+        }
+        else if (package.SecretDestination == slot)
+        {
+            playerData.secretMissionPackages -= 1;
+        }
+        else
+        {
+            playerData.misdeliveredPackages -= 1;
+        }
+
+    }
+
     public DestinationPair GetNextDestinationPair()
     {
         Destination normalDest = GetRandomValidDestination();
@@ -393,6 +427,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         Debug.LogError(" destination not found for package symbol location");
         return 2;
     }
+
 
     //Table
     //Package spawner
