@@ -7,7 +7,7 @@ using UnityEngine.XR;
 [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Collider2D))]
 public class Package : MonoBehaviour
 {
-    public static int sortingLayerStart = 0;
+    public static int sortingLayerStart = 1;
     private static int currentSortingOrder = 0;
 
     private SpriteRenderer spriteRenderer;
@@ -62,7 +62,7 @@ public class Package : MonoBehaviour
         if (isBeingDragged)
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePosition.z = 2;
+            mousePosition.z = 5;
             if (mousePosition.y < tableYPosition) {
                 mousePosition.y = tableYPosition;
             }
