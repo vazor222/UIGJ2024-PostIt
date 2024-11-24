@@ -54,7 +54,6 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        PlayBGMusic(mainMenuTheme);
     }
 
     void Update()

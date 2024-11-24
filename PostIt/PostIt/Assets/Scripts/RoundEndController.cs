@@ -16,6 +16,7 @@ public class RoundEndController : MonoBehaviour
         {
             a.StopBGAmbiance();
             a.PlayBGMusic(a.endOfRoundTheme);
+            a.StopStem();
         }
 
         textDoubleAgent.text = "Double Agent score - correctlyDeliveredPackages:" + GameManager.Instance.playerDataDict[PlayerType.Keyboard].correctlyDeliveredPackages +

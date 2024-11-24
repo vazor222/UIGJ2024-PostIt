@@ -8,7 +8,8 @@ public class MainMenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // audio is handled in AudioManager since it lives in this scene
+        AudioManager a = FindObjectOfType<AudioManager>();
+        a.PlayBGMusic(a.mainMenuTheme);
     }
 
     // Update is called once per frame
