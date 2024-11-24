@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
@@ -8,11 +9,40 @@ using UnityEngine.XR;
 [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Collider2D))]
 public class Package : MonoBehaviour
 {
+    //visuals:
+    [SerializeField]
+    private SpriteRenderer Color;
+
+    [SerializeField]
+    private GameObject SymbolTopBackground;
+    [SerializeField]
+    private SpriteRenderer SymbolTop;
+
+    [SerializeField]
+    private GameObject SymbolMiddleBackground;
+    [SerializeField]
+    private SpriteRenderer SymbolMiddle;
+
+    [SerializeField]
+    private GameObject SymbolBottomBackground;
+    [SerializeField]
+    private SpriteRenderer SymbolBottom;
+
+    public Destination Destination
+    {
+        get; private set;
+    }
+    public Destination SecretDestination
+    {
+        get; private set;
+    }
+
     private static int currentSortingOrder = 10;
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     public float tableYPosition;
+    private bool inSlot = false;
 
 
     private Vector3 pickupOffset;
@@ -32,14 +62,49 @@ public class Package : MonoBehaviour
             Land();
         }
     }
+    private void SetIntendedDestination(Sprite DestinationColor, Sprite Symbol, int row, Destination destination, Destination secretDestination = Destination.none) {
+        Destination = destination;
+        Color.sprite = DestinationColor;
+        SymbolTopBackground.gameObject.SetActive(false);
+        SymbolMiddleBackground.gameObject.SetActive(false);
+        SymbolBottomBackground.gameObject.SetActive(false);
+        switch (row) { 
+            case 0:
+                SymbolTopBackground.gameObject.SetActive(true);
+                SymbolTop.sprite = Symbol;
+                break;
+            case 1:
+                SymbolMiddleBackground.gameObject.SetActive(true);
+                SymbolMiddle.sprite = Symbol;
+                break;
+            case 2:
+                SymbolBottomBackground.gameObject.SetActive(true);
+                SymbolBottom.sprite = Symbol;
+                break;
+        }
+        SecretDestination = secretDestination;
+    }
+
     public void UpdateSortingOrder()
     {
-        currentSortingOrder++;
+        currentSortingOrder+=1;
         spriteRenderer.sortingOrder = currentSortingOrder;
     }
 
+    public void ReduceSortOrder()
+    {
+        if(spriteRenderer.sortingOrder <= 2) { 
+            gameObject.SetActive(false);
+            return;
+        }
+        spriteRenderer.sortingOrder -= 1;
+        
+    }
+
     public bool isOnTable() {
-        return !isBeingDragged && !rb.simulated;
+        return !isBeingDragged && 
+            rb.gravityScale == 0 
+            && !inSlot;
     }
 
     public void Land() {
@@ -93,14 +158,15 @@ public class Package : MonoBehaviour
             if (Vector2.Distance(mailSlot.slot.transform.position, currentPosition) <= 1)
             {
                 currentPosition = mailSlot.slot.transform.position;
-                //TODO inform that this mail is in this slot
                 transform.position = currentPosition;
                 gameObject.layer = 6;
                 Land();
-                spriteRenderer.sortingOrder -= 1;
+                inSlot = true;
+                GameplaySceneManager.Instance.HandleMailPlacedInSlot(mailSlot.type, this);
                 return;
             }
         }
+        inSlot = false;
         rb.gravityScale = gravity;
         transform.position = currentPosition;
         spriteRenderer.sortingOrder = currentSortingOrder;
