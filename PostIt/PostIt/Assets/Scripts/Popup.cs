@@ -17,7 +17,7 @@ public class Popup : MonoBehaviour
         AudioManager a = FindObjectOfType<AudioManager>();
         if (a != null)
         {
-            a.PlaySfx(a.paperSlideSfx);
+            a.PlaySfx(a.stampSfx);
         }
         isDisplayed = true;
         gameObject.SetActive(true);
