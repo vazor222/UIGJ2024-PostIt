@@ -35,10 +35,10 @@ public enum PlayerType {
     Mouse
 }
 
-public struct MisdeliveredPopups
+public struct MisdeliveredPopup
 {
     public PlayerType player;
-    public GameObject popup;
+    public Popup popup;
 }
 
 [Serializable]
@@ -72,6 +72,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
 
     public Collider2D TableCollider { get; internal set; }
     public List<MailSlotMarker> mailSlotMarkers;
+    public List<MisdeliveredPopup> misdeliveredPopups;
     public Dictionary<Destination, List<Package>> MailInSlots = new Dictionary<Destination, List<Package>>();
 
     int currentRound = 0;
@@ -300,11 +301,29 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         }
         else {
             playerData.misdeliveredPackages += 1;
+            ShowMisdeliveredPopup(player);
         }
         UpdateWinningAudio();
         packageList.Add(package);
     }
 
+    private void ShowMisdeliveredPopup(PlayerType player)
+    {
+        if (misdeliveredPopups is null) {
+            return;
+        }
+        foreach (MisdeliveredPopup popup in misdeliveredPopups) {
+            if (popup.player != player)
+            {
+                continue;
+            }
+            if (!popup.popup.isDisplayed)
+            {
+                StartCoroutine(popup.popup.ShowTextForTime(popup.popup.displayTime));
+            }
+        }
+        
+    }
 
     internal void HandleMailRemovedfromSlot(Package package, Destination slot, PlayerType previousPlacedBy)
     {
