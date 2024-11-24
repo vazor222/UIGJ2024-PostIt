@@ -13,6 +13,7 @@ public class Package : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     public float tableYPosition;
+    private bool inSlot = false;
 
 
     private Vector3 pickupOffset;
@@ -34,12 +35,19 @@ public class Package : MonoBehaviour
     }
     public void UpdateSortingOrder()
     {
-        currentSortingOrder++;
+        currentSortingOrder+=1;
         spriteRenderer.sortingOrder = currentSortingOrder;
     }
 
+    public void ReduceSortOrder()
+    {
+        spriteRenderer.sortingOrder -= 1;
+    }
+
     public bool isOnTable() {
-        return !isBeingDragged && !rb.simulated;
+        return !isBeingDragged && 
+            rb.gravityScale == 0 
+            && !inSlot;
     }
 
     public void Land() {
@@ -93,14 +101,15 @@ public class Package : MonoBehaviour
             if (Vector2.Distance(mailSlot.slot.transform.position, currentPosition) <= 1)
             {
                 currentPosition = mailSlot.slot.transform.position;
-                //TODO inform that this mail is in this slot
                 transform.position = currentPosition;
                 gameObject.layer = 6;
                 Land();
-                spriteRenderer.sortingOrder -= 1;
+                inSlot = true;
+                GameplaySceneManager.Instance.HandleMailPlacedInSlot(mailSlot.type, this);
                 return;
             }
         }
+        inSlot = false;
         rb.gravityScale = gravity;
         transform.position = currentPosition;
         spriteRenderer.sortingOrder = currentSortingOrder;
