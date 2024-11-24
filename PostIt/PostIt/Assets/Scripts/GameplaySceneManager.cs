@@ -131,8 +131,50 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
 
     public DestinationPair GetNextDestinationPair()
     {
-        //TODO
-        return new DestinationPair { destination = Destination.none, secretDestination = Destination.none };
+        Destination normalDest = GetRandomValidDestination();
+        DestinationPair result = new DestinationPair
+        {
+            destination = normalDest,
+            secretDestination = Destination.none
+        };
+        switch (normalDest) { 
+            case Destination.NorthPole:
+                result.secretDestination = Destination.notNorthKorea;
+                break;
+            default:
+                result.secretDestination = Destination.none;
+                break;
+        }
+        return result;
+    }
+
+    private Destination GetRandomValidDestination()
+    {
+        // Create a list of valid destinations (excluding 'none' and 'Trash')
+        List<Destination> validDestinations = new List<Destination>
+        {
+            Destination.Hell,
+            Destination.notNorthKorea,
+            Destination.Deathstar,
+            Destination.Arrakis,
+            Destination.TheDump,
+            Destination.BuildABear,
+            Destination.Pentagon,
+            Destination.DonutElem,
+            Destination.FortBragg,
+            Destination.Hospital,
+            Destination.CityHall,
+            Destination.FarmerJo,
+            Destination.BagEnd,
+            Destination.NorthPole,
+            Destination.YourMom
+        };
+
+        // Randomly pick an index from the validDestinations list
+        int randomIndex = UnityEngine.Random.Range(0, validDestinations.Count);
+
+        // Return the random destination
+        return validDestinations[randomIndex];
     }
 
     internal int GetDestinationCol(Destination destination)
