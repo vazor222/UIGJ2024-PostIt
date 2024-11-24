@@ -1578,7 +1578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb53965b311d87c4aa541ecca29c3496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuTheme: {fileID: 8300000, guid: a767cc24c7cc14543b62d0896b290a11, type: 3}
+  mainMenuTheme: {fileID: 8300000, guid: 65ce887f98da1f24abcb16fb9f866883, type: 3}
   missionSelectTheme: {fileID: 8300000, guid: a767cc24c7cc14543b62d0896b290a11, type: 3}
   mailRoomTheme: {fileID: 8300000, guid: 766b6f50d7a063544812dc539a1455b7, type: 3}
   endOfRoundTheme: {fileID: 8300000, guid: a767cc24c7cc14543b62d0896b290a11, type: 3}
