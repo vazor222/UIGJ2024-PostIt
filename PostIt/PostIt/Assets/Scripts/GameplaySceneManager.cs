@@ -364,6 +364,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         {
             playerData.misdeliveredPackages -= 1;
         }
+        playerDataDict[previousPlacedBy] = playerData;
         UpdateWinningAudio();
     }
 
