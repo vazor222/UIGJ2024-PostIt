@@ -53,8 +53,8 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        //PlayBGMusic(mainMenuTheme);
-        PlayBGMusicWithStems(mailRoomTheme, mailRoomLoyalistStem, mailRoomDoubleAgentStem);
+        PlayBGMusic(mainMenuTheme);
+        //PlayBGMusicWithStems(mailRoomTheme, mailRoomLoyalistStem, mailRoomDoubleAgentStem);  // TODO: use this in the main gameplay 
     }
 
     void Update()
@@ -165,6 +165,7 @@ public class AudioManager : MonoBehaviour
     public void PlayBGMusic(AudioClip theme)
     {
         backgroundAudioSource.clip = theme;
+        backgroundAudioSource.loop = true;
         backgroundAudioSource.Play();
     }
 
@@ -174,9 +175,12 @@ public class AudioManager : MonoBehaviour
         loyalistStemQueued = false;
         doubleAgentStemQueued = false;
         backgroundAudioSource.clip = theme;
+        backgroundAudioSource.loop = true;
         stemLoyalistAudioSource.clip = stemLoyalist;
+        stemLoyalistAudioSource.loop = true;
         stemLoyalistAudioSource.volume = 0f;
         stemDoubleAgentAudioSource.clip = stemDoubleAgent;
+        stemDoubleAgentAudioSource.loop = true;
         stemDoubleAgentAudioSource.volume = 0f;
 
         double startMusicTogetherTime = AudioSettings.dspTime + 2.0f;
