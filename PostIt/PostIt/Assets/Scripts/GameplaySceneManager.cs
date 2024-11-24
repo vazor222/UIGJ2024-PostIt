@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.SceneManagement;
 
 
 public enum Destination
@@ -75,7 +76,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     private IndicatorBounce indicator;
     int keyboardPlayerSelectedPackageIndex = -1;
 
-    Dictionary<PlayerType, PlayerData> playerDataDict = new Dictionary<PlayerType, PlayerData> {
+    public Dictionary<PlayerType, PlayerData> playerDataDict = new Dictionary<PlayerType, PlayerData> {
         { PlayerType.Keyboard , 
             new PlayerData{
                 secretMissionPackages = 0,
@@ -213,7 +214,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public void endRound() {
-        //TODO send playerDataDict to next scene
+        SceneManager.LoadScene("EndRound");
     }
 
     public void AddSpawnedPackage(Package spawnedPackage) 
