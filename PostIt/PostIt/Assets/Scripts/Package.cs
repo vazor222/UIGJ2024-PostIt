@@ -14,17 +14,17 @@ public class Package : MonoBehaviour
     private SpriteRenderer Color;
 
     [SerializeField]
-    private GameObject SymbolTopBackground;
+    private SpriteRenderer SymbolTopBackground;
     [SerializeField]
     private SpriteRenderer SymbolTop;
 
     [SerializeField]
-    private GameObject SymbolMiddleBackground;
+    private SpriteRenderer SymbolMiddleBackground;
     [SerializeField]
     private SpriteRenderer SymbolMiddle;
 
     [SerializeField]
-    private GameObject SymbolBottomBackground;
+    private SpriteRenderer SymbolBottomBackground;
     [SerializeField]
     private SpriteRenderer SymbolBottom;
 
@@ -62,7 +62,7 @@ public class Package : MonoBehaviour
             Land();
         }
     }
-    private void SetIntendedDestination(Sprite DestinationColor, Sprite Symbol, int row, Destination destination, Destination secretDestination = Destination.none) {
+    public void SetIntendedDestination(Sprite DestinationColor, Sprite Symbol, int row, Destination destination, Destination secretDestination = Destination.none) {
         Destination = destination;
         Color.sprite = DestinationColor;
         SymbolTopBackground.gameObject.SetActive(false);
@@ -87,8 +87,24 @@ public class Package : MonoBehaviour
 
     public void UpdateSortingOrder()
     {
-        currentSortingOrder+=1;
-        spriteRenderer.sortingOrder = currentSortingOrder;
+        setSortingOrder(currentSortingOrder);
+        currentSortingOrder += 4;
+    }
+
+    private void setSortingOrder(int order) {
+        order += 1;
+        spriteRenderer.sortingOrder = order;
+        order += 1;
+        Color.sortingOrder = order;
+        order += 1;
+        SymbolTopBackground.sortingOrder = order;
+        SymbolMiddleBackground.sortingOrder = order;
+        SymbolBottomBackground.sortingOrder = order;
+
+        order += 1;
+        SymbolTop.sortingOrder = order;
+        SymbolMiddle.sortingOrder = order;
+        SymbolBottom.sortingOrder = order;
     }
 
     public void ReduceSortOrder()
@@ -97,8 +113,8 @@ public class Package : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-        spriteRenderer.sortingOrder -= 1;
-        
+        setSortingOrder(spriteRenderer.sortingOrder - 1);
+
     }
 
     public bool isOnTable() {
@@ -120,7 +136,7 @@ public class Package : MonoBehaviour
         isBeingDragged = true;
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pickupOffset = transform.position - mousePosition;
-        spriteRenderer.sortingOrder = 5;
+        setSortingOrder(5);
     }
 
     void OnMouseDrag()
@@ -165,7 +181,7 @@ public class Package : MonoBehaviour
         inSlot = false;
         rb.gravityScale = gravity;
         transform.position = currentPosition;
-        spriteRenderer.sortingOrder = currentSortingOrder;
+        UpdateSortingOrder();
         gameObject.layer = 0;
     }
     #endregion

@@ -28,6 +28,13 @@ public enum Destination
 }
 
 [Serializable]
+public struct DestinationPair
+{
+    public Destination destination;
+    public Destination secretDestination;
+}
+
+[Serializable]
 public struct MailSlotMarker
 {
     public Destination type;
@@ -206,6 +213,116 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             oldPackage.ReduceSortOrder();
         }
         packageList.Add(package);
+    }
+
+    public DestinationPair GetNextDestinationPair()
+    {
+        Destination normalDest = GetRandomValidDestination();
+        DestinationPair result = new DestinationPair
+        {
+            destination = normalDest,
+            secretDestination = Destination.none
+        };
+        switch (normalDest) { 
+            case Destination.NorthPole:
+                result.secretDestination = Destination.notNorthKorea;
+                break;
+            default:
+                result.secretDestination = Destination.none;
+                break;
+        }
+        return result;
+    }
+
+    private Destination GetRandomValidDestination()
+    {
+        // Create a list of valid destinations (excluding 'none' and 'Trash')
+        List<Destination> validDestinations = new List<Destination>
+        {
+            Destination.Hell,
+            Destination.notNorthKorea,
+            Destination.Deathstar,
+            Destination.Arrakis,
+            Destination.TheDump,
+            Destination.BuildABear,
+            Destination.Pentagon,
+            Destination.DonutElem,
+            Destination.FortBragg,
+            Destination.Hospital,
+            Destination.CityHall,
+            Destination.FarmerJo,
+            Destination.BagEnd,
+            Destination.NorthPole,
+            Destination.YourMom
+        };
+
+        // Randomly pick an index from the validDestinations list
+        int randomIndex = UnityEngine.Random.Range(0, validDestinations.Count);
+
+        // Return the random destination
+        return validDestinations[randomIndex];
+    }
+
+    internal int GetDestinationCol(Destination destination)
+    {
+        switch (destination)
+        {
+            case Destination.Hell:
+            case Destination.BuildABear:
+            case Destination.CityHall:
+                return 0;
+            case Destination.notNorthKorea:
+            case Destination.Pentagon:
+            case Destination.FarmerJo:
+                return 1;
+            case Destination.Deathstar:
+            case Destination.DonutElem:
+            case Destination.BagEnd:
+                return 2;
+            case Destination.Arrakis:
+            case Destination.FortBragg:
+            case Destination.NorthPole:
+                return 3;
+            case Destination.TheDump:
+            case Destination.Hospital:
+            case Destination.YourMom:
+                return 4;
+            case Destination.Trash:
+                Debug.LogError("trash is not a valid destination for package color");
+                return 0;
+        }
+        Debug.LogError(" destination not found for package color");
+        return 0;
+    }
+
+    internal int GetDestinationRow(Destination destination)
+    {
+        switch (destination)
+        {
+            case Destination.Hell:
+            case Destination.notNorthKorea:
+            case Destination.Deathstar:
+            case Destination.Arrakis:
+            case Destination.TheDump:
+                return 0;
+            case Destination.BuildABear:
+            case Destination.Pentagon:
+            case Destination.DonutElem:
+            case Destination.FortBragg:
+            case Destination.Hospital:
+                return 1;
+            case Destination.CityHall:
+            case Destination.FarmerJo:
+            case Destination.BagEnd:
+            case Destination.NorthPole:
+            case Destination.YourMom:
+                return 2;
+            case Destination.Trash:
+                Debug.LogError("trash is not a valid destination for package symbol location");
+                break;
+        }
+        Debug.LogError(" destination not found for package symbol location");
+        return 2;
     }
 
     //Table
