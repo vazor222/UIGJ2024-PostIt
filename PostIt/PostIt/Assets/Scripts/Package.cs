@@ -17,12 +17,14 @@ public class Package : MonoBehaviour
 
     private Vector3 pickupOffset;
     private bool isBeingDragged = false;
+    private float gravity;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = gameObject.GetComponent<Rigidbody2D>();
         tableYPosition = GameplaySceneManager.Instance.GetTablePos();
         UpdateSortingOrder();
+        gravity = rb.gravityScale;
     }
     private void Update()
     {
@@ -41,11 +43,13 @@ public class Package : MonoBehaviour
     }
 
     public void Land() {
-        rb.simulated = false;
+        rb.gravityScale = 0;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = 0;
     }
 
     #region mouse controls
-    public void OnStartDrag()
+    public void OnMouseDown()
     {
         Debug.Log("package clicked, starting drag");
         isBeingDragged = true;
@@ -53,7 +57,7 @@ public class Package : MonoBehaviour
         pickupOffset = transform.position - mousePosition;
     }
 
-    public void OnDrag()
+    void OnMouseDrag()
     {
         if (isBeingDragged)
         {
@@ -66,7 +70,7 @@ public class Package : MonoBehaviour
         }
     }
 
-    public void OnendDrag()
+    void OnMouseUp()
     {
         isBeingDragged = false;
 
@@ -77,7 +81,7 @@ public class Package : MonoBehaviour
         }
         transform.position = currentPosition;
 
-        rb.simulated = true;
+        rb.gravityScale = gravity;
         //TODO Place in box
     }
     #endregion
