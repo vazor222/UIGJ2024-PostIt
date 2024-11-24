@@ -6,6 +6,7 @@ using UnityEngine;
 [Serializable]
 public enum ItemType
 {
+    none,
     Letter,
     BigEnvelope,
     LightPackage,
@@ -19,6 +20,8 @@ public struct SpawnableObject
 {
     public ItemType type;
     public Package prefab;
+    public List<Sprite> Colors;
+    public List<Sprite> Symbols;
 }
 
 public class PackageSpawner : MonoBehaviour

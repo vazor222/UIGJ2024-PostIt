@@ -1,25 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
 
 
 public enum Destination
 {
+    none,
     Hell,
     notNorthKorea,
     Deathstar,
     Arrakis,
     TheDump,
     BuildABear,
-    FireDept,
+    Pentagon,
     DonutElem,
-    MotherLand,
+    FortBragg,
     Hospital,
     CityHall,
     FarmerJo,
-    TheHood,
+    BagEnd,
     NorthPole,
     YourMom,
     Trash
@@ -28,7 +30,7 @@ public enum Destination
 [Serializable]
 public struct MailSlotMarker
 {
-    public Destination location;
+    public Destination type;
     public GameObject slot;
 }
 
@@ -49,6 +51,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
 
     public Collider2D TableCollider { get; internal set; }
     public List<MailSlotMarker> mailSlotMarkers;
+    public Dictionary<Destination, List<Package>> MailInSlots;
 
     int currentRound = 0;
     private float roundStart;
@@ -76,8 +79,25 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     {
         packageEnties.Add(spawnedPackage);
     }
+    public void DestroySpawnedPackage(Package spawnedPackage) {
+        if (packageEnties.Count > 0 && packageEnties.Contains(spawnedPackage))
+        {
+            packageEnties.Remove(spawnedPackage);
+        }
+        Destroy(spawnedPackage.gameObject);
+    }
     public List<Package> PackagesOnTable() { 
-        return packageEnties;//TODO implement
+        List<Package> result = new List<Package>();
+        foreach (Package package in packageEnties) {
+            if (package is null)
+            {
+                continue;
+            }
+            if (package.isOnTable()) {
+                result.Add(package);
+            }
+        }
+        return result;
     }
 
     public float GetTablePos()
@@ -86,6 +106,21 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         return UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
     }
 
+    public void HandleMailPlacedInSlot(Destination type, Package package) {
+        if (type == Destination.Trash) {
+            DestroySpawnedPackage(package);
+            return;
+        }
+        List<Package> packageList;
+        if (!MailInSlots.TryGetValue(type,out packageList)) {
+            packageList = new List<Package>();
+            MailInSlots.Add(type, packageList);
+        }
+        foreach (Package oldPackage in packageList) {
+            oldPackage.ReduceSortOrder();
+        }
+        packageList.Add(package);
+    }
 
     //Table
     //Package spawner
