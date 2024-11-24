@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
@@ -8,6 +9,34 @@ using UnityEngine.XR;
 [RequireComponent(typeof(SpriteRenderer), typeof(Rigidbody2D), typeof(Collider2D))]
 public class Package : MonoBehaviour
 {
+    //visuals:
+    [SerializeField]
+    private SpriteRenderer Color;
+
+    [SerializeField]
+    private GameObject SymbolTopBackground;
+    [SerializeField]
+    private SpriteRenderer SymbolTop;
+
+    [SerializeField]
+    private GameObject SymbolMiddleBackground;
+    [SerializeField]
+    private SpriteRenderer SymbolMiddle;
+
+    [SerializeField]
+    private GameObject SymbolBottomBackground;
+    [SerializeField]
+    private SpriteRenderer SymbolBottom;
+
+    public Destination Destination
+    {
+        get; private set;
+    }
+    public Destination SecretDestination
+    {
+        get; private set;
+    }
+
     private static int currentSortingOrder = 10;
 
     private SpriteRenderer spriteRenderer;
@@ -33,6 +62,29 @@ public class Package : MonoBehaviour
             Land();
         }
     }
+    private void SetIntendedDestination(Sprite DestinationColor, Sprite Symbol, int row, Destination destination, Destination secretDestination = Destination.none) {
+        Destination = destination;
+        Color.sprite = DestinationColor;
+        SymbolTopBackground.gameObject.SetActive(false);
+        SymbolMiddleBackground.gameObject.SetActive(false);
+        SymbolBottomBackground.gameObject.SetActive(false);
+        switch (row) { 
+            case 0:
+                SymbolTopBackground.gameObject.SetActive(true);
+                SymbolTop.sprite = Symbol;
+                break;
+            case 1:
+                SymbolMiddleBackground.gameObject.SetActive(true);
+                SymbolMiddle.sprite = Symbol;
+                break;
+            case 2:
+                SymbolBottomBackground.gameObject.SetActive(true);
+                SymbolBottom.sprite = Symbol;
+                break;
+        }
+        SecretDestination = secretDestination;
+    }
+
     public void UpdateSortingOrder()
     {
         currentSortingOrder+=1;
@@ -41,7 +93,12 @@ public class Package : MonoBehaviour
 
     public void ReduceSortOrder()
     {
+        if(spriteRenderer.sortingOrder <= 2) { 
+            gameObject.SetActive(false);
+            return;
+        }
         spriteRenderer.sortingOrder -= 1;
+        
     }
 
     public bool isOnTable() {

@@ -8,6 +8,7 @@ using UnityEngine.XR;
 
 public enum Destination
 {
+    none,
     Hell,
     notNorthKorea,
     Deathstar,
