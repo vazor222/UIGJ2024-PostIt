@@ -82,6 +82,20 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         roundEnd = roundStart + roundLen;*/
     }
 
+    private void FixedUpdate()
+    {
+        foreach (Package package in PackagesOnTable()) {
+            if (package is null)
+            {
+                continue;
+            }
+            else if(package.transform.position.y <= -10)
+            {
+                DestroySpawnedPackage(package);
+            }
+        }
+    }
+
     public void AddSpawnedPackage(Package spawnedPackage) 
     {
         packageEnties.Add(spawnedPackage);
