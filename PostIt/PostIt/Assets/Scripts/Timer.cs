@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
     public TextMeshPro timerText; 
     private float timeRemaining;
     int currentRound = 0;
+    bool isCountdownStarted = false;
 
     void Start()
     {
@@ -45,6 +46,13 @@ public class Timer : MonoBehaviour
 
     void UpdateTimerDisplay()
     {
+        if (!isCountdownStarted && timeRemaining <= 9) {
+            AudioManager a = FindObjectOfType<AudioManager>();
+            if (a != null)
+            {
+                a.PlaySfx(a.countdownSfx);
+            }
+        }
         int minutes = Mathf.FloorToInt(timeRemaining / 60);
         int seconds = Mathf.FloorToInt(timeRemaining % 60);
 

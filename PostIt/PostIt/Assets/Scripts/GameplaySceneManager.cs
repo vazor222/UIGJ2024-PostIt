@@ -28,10 +28,17 @@ public enum Destination
     Trash
 }
 
+[Serializable]
 public enum PlayerType { 
     None,
     Keyboard,
     Mouse
+}
+
+public struct MisdeliveredPopup
+{
+    public PlayerType player;
+    public Popup popup;
 }
 
 [Serializable]
@@ -65,6 +72,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
 
     public Collider2D TableCollider { get; internal set; }
     public List<MailSlotMarker> mailSlotMarkers;
+    public List<MisdeliveredPopup> misdeliveredPopups;
     public Dictionary<Destination, List<Package>> MailInSlots = new Dictionary<Destination, List<Package>>();
 
     int currentRound = 0;
@@ -75,6 +83,8 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     private List<Package> packageEnties = new List<Package>();
     private IndicatorBounce indicator;
     int keyboardPlayerSelectedPackageIndex = -1;
+
+
 
     public Dictionary<PlayerType, PlayerData> playerDataDict = new Dictionary<PlayerType, PlayerData> {
         { PlayerType.Keyboard , 
@@ -108,6 +118,11 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         }
         roundEnd = roundStart + roundLen;*/
         indicator = FindObjectOfType<IndicatorBounce>();
+
+        AudioManager a = FindObjectOfType<AudioManager>();
+        if (a != null) {
+            a.PlayBGMusicWithStems(a.mailRoomTheme, a.mailRoomLoyalistStem, a.mailRoomDoubleAgentStem);
+        }
     }
 
     void Update()
@@ -248,7 +263,6 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public void HandleMailPlacedInSlot(Destination type, Package package, PlayerType player) {
-        
         if (type == Destination.Trash) {
             DestroySpawnedPackage(package);
             return;
@@ -287,10 +301,29 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         }
         else {
             playerData.misdeliveredPackages += 1;
+            ShowMisdeliveredPopup(player);
         }
+        UpdateWinningAudio();
         packageList.Add(package);
     }
 
+    private void ShowMisdeliveredPopup(PlayerType player)
+    {
+        if (misdeliveredPopups is null) {
+            return;
+        }
+        foreach (MisdeliveredPopup popup in misdeliveredPopups) {
+            if (popup.player != player)
+            {
+                continue;
+            }
+            if (!popup.popup.isDisplayed)
+            {
+                StartCoroutine(popup.popup.ShowTextForTime(popup.popup.displayTime));
+            }
+        }
+        
+    }
 
     internal void HandleMailRemovedfromSlot(Package package, Destination slot, PlayerType previousPlacedBy)
     {
@@ -322,7 +355,16 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         {
             playerData.misdeliveredPackages -= 1;
         }
+        UpdateWinningAudio();
+    }
 
+    public void UpdateWinningAudio() {
+        
+        AudioManager a = FindObjectOfType<AudioManager>();
+        if (a != null)
+        {
+            //TODO calc score and update if needed
+        }
     }
 
     public DestinationPair GetNextDestinationPair()
