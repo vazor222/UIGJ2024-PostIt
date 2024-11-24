@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.SceneManagement;
 
 
 public enum Destination
@@ -75,7 +76,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     private IndicatorBounce indicator;
     int keyboardPlayerSelectedPackageIndex = -1;
 
-    Dictionary<PlayerType, PlayerData> playerDataDict = new Dictionary<PlayerType, PlayerData> {
+    public Dictionary<PlayerType, PlayerData> playerDataDict = new Dictionary<PlayerType, PlayerData> {
         { PlayerType.Keyboard , 
             new PlayerData{
                 secretMissionPackages = 0,
@@ -150,7 +151,6 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         if (Input.GetKeyDown(KeyCode.R))
         {
             packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.Arrakis).slot.transform.position, Destination.Arrakis);
-            // TODO: play sfx
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -213,7 +213,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public void endRound() {
-        //TODO send playerDataDict to next scene
+        SceneManager.LoadScene("EndRound");
     }
 
     public void AddSpawnedPackage(Package spawnedPackage) 
@@ -248,9 +248,17 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public void HandleMailPlacedInSlot(Destination type, Package package, PlayerType player) {
+        
         if (type == Destination.Trash) {
             DestroySpawnedPackage(package);
             return;
+        }
+        if (type == Destination.Arrakis) {
+            AudioManager a = FindObjectOfType<AudioManager>();
+            if (a != null)
+            {
+                a.PlaySfx(a.arrakisSfx);
+            }
         }
         List<Package> packageList;
         if (!MailInSlots.TryGetValue(type,out packageList)) {
@@ -327,7 +335,15 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         };
         switch (normalDest) { 
             case Destination.NorthPole:
-                result.secretDestination = Destination.notNorthKorea;
+                float randomValue = UnityEngine.Random.Range(0f, 1f);
+                if (randomValue < 0.5f)
+                {
+                    result.secretDestination = Destination.notNorthKorea;
+                }
+                else
+                {
+                    result.secretDestination = Destination.none;
+                }
                 break;
             default:
                 result.secretDestination = Destination.none;

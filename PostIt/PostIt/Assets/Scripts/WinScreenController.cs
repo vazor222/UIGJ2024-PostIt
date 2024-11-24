@@ -12,7 +12,9 @@ public class WinScreenController : MonoBehaviour
     void Start()
     {
         AudioManager a = FindObjectOfType<AudioManager>();
-        if( GameManager.Instance.player1Data.secretMissionPackages > GameManager.Instance.player1Data.correctlyDeliveredPackages )
+        int doubleAgentScore = GameplaySceneManager.Instance.playerDataDict[PlayerType.Keyboard].correctlyDeliveredPackages + GameplaySceneManager.Instance.playerDataDict[PlayerType.Keyboard].secretMissionPackages * 5 - GameplaySceneManager.Instance.playerDataDict[PlayerType.Keyboard].misdeliveredPackages;
+        int loyalistScore = GameplaySceneManager.Instance.playerDataDict[PlayerType.Mouse].correctlyDeliveredPackages + GameplaySceneManager.Instance.playerDataDict[PlayerType.Mouse].secretMissionPackages * 5 - GameplaySceneManager.Instance.playerDataDict[PlayerType.Mouse].misdeliveredPackages;
+        if ( doubleAgentScore > loyalistScore )
         {
             if( a != null )
             {
