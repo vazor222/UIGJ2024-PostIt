@@ -28,7 +28,7 @@ public class PackageSpawner : MonoBehaviour
 {
     [SerializeField]
     private int packagesToSpawn = 5;
-    public int CooldownTime = 150;
+    public int CooldownTime = 100;
     private int coolDownRemaining = 0;
     public Collider2D spawnZone;
     [SerializeField]
@@ -51,7 +51,7 @@ public class PackageSpawner : MonoBehaviour
         {
             SpawnPackage();
             packagesToSpawn -= 1;
-            if (CooldownTime > 50) {
+            if (CooldownTime > 30) {
                 CooldownTime -= 1;
             }
             coolDownRemaining = CooldownTime;
