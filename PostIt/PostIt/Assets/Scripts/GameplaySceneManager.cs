@@ -151,7 +151,11 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         if (Input.GetKeyDown(KeyCode.R))
         {
             packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.Arrakis).slot.transform.position, Destination.Arrakis);
-            // TODO: play sfx
+            AudioManager a = FindObjectOfType<AudioManager>();
+            if( a != null )
+            {
+                a.PlaySfx(a.arrakisSfx);
+            }
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
