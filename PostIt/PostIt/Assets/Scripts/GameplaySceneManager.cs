@@ -58,6 +58,8 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     float roundLen;
     private float roundEnd;
     private List<Package> packageEnties = new List<Package>();
+    private IndicatorBounce indicator;
+    int keyboardPlayerSelectedPackageIndex = -1;
 
     private void Start()
     {/*
@@ -73,6 +75,24 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             roundLen = 180;
         }
         roundEnd = roundStart + roundLen;*/
+        indicator = FindObjectOfType<IndicatorBounce>();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (packageEnties.Count > 0)
+            {
+                // select the next package
+                if (++keyboardPlayerSelectedPackageIndex >= packageEnties.Count)
+                    keyboardPlayerSelectedPackageIndex = 0;
+                Package p = packageEnties[keyboardPlayerSelectedPackageIndex];
+
+                // move the indicator to the package
+                indicator.transform.position = new Vector3(p.transform.position.x, p.transform.position.y+1, 1);
+            }
+        }
     }
 
     public void AddSpawnedPackage(Package spawnedPackage) 
