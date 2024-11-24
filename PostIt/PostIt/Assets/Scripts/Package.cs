@@ -62,7 +62,7 @@ public class Package : MonoBehaviour
             Land();
         }
     }
-    private void SetIntendedDestination(Sprite DestinationColor, Sprite Symbol, int row, Destination destination, Destination secretDestination = Destination.none) {
+    public void SetIntendedDestination(Sprite DestinationColor, Sprite Symbol, int row, Destination destination, Destination secretDestination = Destination.none) {
         Destination = destination;
         Color.sprite = DestinationColor;
         SymbolTopBackground.gameObject.SetActive(false);
