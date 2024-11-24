@@ -89,7 +89,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (packageEnties.Exists(m => m.isOnTable()))
+            if (packageEnties.Exists(m => m.IsOnTable()))
             {
                 // select the next package
                 do
@@ -97,7 +97,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
                     if (++keyboardPlayerSelectedPackageIndex >= packageEnties.Count)
                         keyboardPlayerSelectedPackageIndex = 0;
                 }
-                while (!packageEnties[keyboardPlayerSelectedPackageIndex].isOnTable());
+                while (!packageEnties[keyboardPlayerSelectedPackageIndex].IsOnTable());
                 Package p = packageEnties[keyboardPlayerSelectedPackageIndex];
 
                 // move the indicator to the package
