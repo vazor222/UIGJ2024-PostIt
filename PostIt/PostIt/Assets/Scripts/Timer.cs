@@ -52,6 +52,7 @@ public class Timer : MonoBehaviour
             {
                 a.PlaySfx(a.countdownSfx);
             }
+            isCountdownStarted = true;
         }
         int minutes = Mathf.FloorToInt(timeRemaining / 60);
         int seconds = Mathf.FloorToInt(timeRemaining % 60);
