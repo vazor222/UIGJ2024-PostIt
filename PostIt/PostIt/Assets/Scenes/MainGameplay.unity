@@ -2069,7 +2069,7 @@ MonoBehaviour:
     popup: {fileID: 1775029234}
   - player: 2
     popup: {fileID: 978797724}
-  roundTimeRemaining: 0
+  roundTimeRemaining: 500
 --- !u!1 &2033818271
 GameObject:
   m_ObjectHideFlags: 0

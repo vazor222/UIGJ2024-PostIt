@@ -229,7 +229,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public void endRound() {
-        SceneManager.LoadScene("EndRound");
+        SceneManager.LoadScene("RoundEnd");
     }
 
     public void AddSpawnedPackage(Package spawnedPackage) 
