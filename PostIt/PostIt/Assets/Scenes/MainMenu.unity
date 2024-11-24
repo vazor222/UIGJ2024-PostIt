@@ -1579,13 +1579,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuTheme: {fileID: 8300000, guid: 65ce887f98da1f24abcb16fb9f866883, type: 3}
-  missionSelectTheme: {fileID: 8300000, guid: a767cc24c7cc14543b62d0896b290a11, type: 3}
-  mailRoomTheme: {fileID: 8300000, guid: 766b6f50d7a063544812dc539a1455b7, type: 3}
-  endOfRoundTheme: {fileID: 8300000, guid: a767cc24c7cc14543b62d0896b290a11, type: 3}
-  loyalistWinScreenTheme: {fileID: 8300000, guid: 3df2eed8155e4dc4fabf6df55f392013, type: 3}
+  missionSelectTheme: {fileID: 8300000, guid: 28f33b287b2381746a112ccded4623ff, type: 3}
+  mailRoomTheme: {fileID: 8300000, guid: 3b12edffe94bafa41857cb89424a2135, type: 3}
+  endOfRoundTheme: {fileID: 8300000, guid: 28f33b287b2381746a112ccded4623ff, type: 3}
+  loyalistWinScreenTheme: {fileID: 8300000, guid: a15adb62c054e9a4ea24e07b6a504a89, type: 3}
   doubleAgentWinScreenTheme: {fileID: 8300000, guid: 50dfba6479671e447ad3df0e08ac7908, type: 3}
-  mailRoomLoyalistStem: {fileID: 8300000, guid: 3df2eed8155e4dc4fabf6df55f392013, type: 3}
-  mailRoomDoubleAgentStem: {fileID: 8300000, guid: 50dfba6479671e447ad3df0e08ac7908, type: 3}
+  mailRoomLoyalistStem: {fileID: 8300000, guid: ed824cee21f4e2f48b284b13775f990c, type: 3}
+  mailRoomDoubleAgentStem: {fileID: 8300000, guid: 36002ffe46792944aa1e7d662ec946c1, type: 3}
   mailRoomFanBackgroundAmbiance: {fileID: 8300000, guid: 4bd498f3b9583184fb5dbda25b816c5e, type: 3}
   packageSlideSfx: {fileID: 8300000, guid: 0bdeb618fdb07cc4bbdadd7ba9d40799, type: 3}
   paperSlideSfx: {fileID: 8300000, guid: 1a5de475145f77f418ab2d41c2263569, type: 3}
