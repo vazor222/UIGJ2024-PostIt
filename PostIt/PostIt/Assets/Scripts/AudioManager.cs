@@ -28,6 +28,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip packageDrop1Sfx;
     public AudioClip packageDrop2Sfx;
     public AudioClip stampSfx;
+    public AudioClip arrakisSfx;
 
     public AudioSource sfxAudioSource;
     public AudioSource backgroundAudioSource;
