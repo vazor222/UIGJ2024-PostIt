@@ -42,7 +42,8 @@ public class Package : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
     public float tableYPosition;
-    private bool inSlot = false;
+    private Destination slot = Destination.none;
+    PlayerType isPlacedInSlotBy = PlayerType.None;
 
 
     private Vector3 pickupOffset;
@@ -123,7 +124,7 @@ public class Package : MonoBehaviour
         }
         return !isBeingDragged && 
             rb.gravityScale == 0 
-            && !inSlot;
+            && slot == Destination.none;
     }
 
     public void Land() {
@@ -136,6 +137,9 @@ public class Package : MonoBehaviour
     public void OnMouseDown()
     {
         Debug.Log("package clicked, starting drag");
+        if (slot != Destination.none) {
+            RemovefromSlot();
+        }
         isBeingDragged = true;
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pickupOffset = transform.position - mousePosition;
@@ -177,11 +181,11 @@ public class Package : MonoBehaviour
             if (Vector2.Distance(mailSlot.slot.transform.position, currentPosition) <= 1)
             {
                 currentPosition = mailSlot.slot.transform.position;
-                PlaceInSlot(currentPosition, mailSlot.type);
+                PlaceInSlot(currentPosition, mailSlot.type, PlayerType.Mouse);
                 return;
             }
         }
-        inSlot = false;
+        slot = Destination.none;
         rb.gravityScale = gravity;
         transform.position = currentPosition;
         UpdateSortingOrder();
@@ -189,13 +193,20 @@ public class Package : MonoBehaviour
     }
     #endregion
 
-    public void PlaceInSlot(Vector2 currentPosition, Destination type)
+    public void PlaceInSlot(Vector2 currentPosition, Destination type, PlayerType player = PlayerType.Keyboard)
     {
+        setSortingOrder(5);
         transform.position = currentPosition;
         gameObject.layer = 6;
         Land();
-        inSlot = true;
-        GameplaySceneManager.Instance.HandleMailPlacedInSlot(type, this);
-
+        slot = type;
+        isPlacedInSlotBy = player;
+        GameplaySceneManager.Instance.HandleMailPlacedInSlot(type, this, player);
+    }
+    public void RemovefromSlot()
+    {
+        GameplaySceneManager.Instance.HandleMailRemovedfromSlot(this,slot, isPlacedInSlotBy);
+        slot = Destination.none;
+        isPlacedInSlotBy = PlayerType.None;
     }
 }

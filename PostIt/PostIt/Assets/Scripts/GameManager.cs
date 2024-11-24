@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour, ISingleton<GameManager>
         { 3,180.0f },
     };
 
-    public playerData player1Data = new playerData
+    public PlayerData player1Data = new PlayerData
     {
         secretMissionPackages = 0,
         misdeliveredPackages = 0,
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour, ISingleton<GameManager>
     };
 }
 
-public struct playerData
+public struct PlayerData
 {
     public int secretMissionPackages;
     public int misdeliveredPackages;
