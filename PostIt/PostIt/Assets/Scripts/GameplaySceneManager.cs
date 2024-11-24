@@ -151,11 +151,6 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         if (Input.GetKeyDown(KeyCode.R))
         {
             packageEnties[keyboardPlayerSelectedPackageIndex].PlaceInSlot(mailSlotMarkers.Find(m => m.type == Destination.Arrakis).slot.transform.position, Destination.Arrakis);
-            AudioManager a = FindObjectOfType<AudioManager>();
-            if( a != null )
-            {
-                a.PlaySfx(a.arrakisSfx);
-            }
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -253,9 +248,17 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     }
 
     public void HandleMailPlacedInSlot(Destination type, Package package, PlayerType player) {
+        
         if (type == Destination.Trash) {
             DestroySpawnedPackage(package);
             return;
+        }
+        if (type == Destination.Arrakis) {
+            AudioManager a = FindObjectOfType<AudioManager>();
+            if (a != null)
+            {
+                a.PlaySfx(a.arrakisSfx);
+            }
         }
         List<Package> packageList;
         if (!MailInSlots.TryGetValue(type,out packageList)) {
