@@ -177,7 +177,7 @@ public class Package : MonoBehaviour
             if (Vector2.Distance(mailSlot.slot.transform.position, currentPosition) <= 1)
             {
                 currentPosition = mailSlot.slot.transform.position;
-                PlaceInSlot(currentPosition, mailSlot.type);
+                PlaceInSlot(currentPosition, mailSlot.type, PlayerType.Mouse);
                 return;
             }
         }
@@ -189,13 +189,14 @@ public class Package : MonoBehaviour
     }
     #endregion
 
-    public void PlaceInSlot(Vector2 currentPosition, Destination type)
+    public void PlaceInSlot(Vector2 currentPosition, Destination type, PlayerType player = PlayerType.Keyboard)
     {
+        setSortingOrder(5);
         transform.position = currentPosition;
         gameObject.layer = 6;
         Land();
         inSlot = true;
-        GameplaySceneManager.Instance.HandleMailPlacedInSlot(type, this);
+        GameplaySceneManager.Instance.HandleMailPlacedInSlot(type, this, player);
 
     }
 }

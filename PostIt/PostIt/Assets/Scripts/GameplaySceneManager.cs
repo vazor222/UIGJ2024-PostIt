@@ -27,6 +27,12 @@ public enum Destination
     Trash
 }
 
+public enum PlayerType { 
+    None,
+    Keyboard,
+    Mouse
+}
+
 [Serializable]
 public struct DestinationPair
 {
@@ -69,6 +75,23 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     private IndicatorBounce indicator;
     int keyboardPlayerSelectedPackageIndex = -1;
 
+    Dictionary<PlayerType, PlayerData> playerDataDict = new Dictionary<PlayerType, PlayerData> {
+        { PlayerType.Keyboard , 
+            new PlayerData{
+                secretMissionPackages = 0,
+                misdeliveredPackages = 0,
+                correctlyDeliveredPackages = 0
+            } 
+        },
+        { PlayerType.Mouse ,
+            new PlayerData{
+                secretMissionPackages = 0,
+                misdeliveredPackages = 0,
+                correctlyDeliveredPackages = 0
+            }
+        },
+    };
+    
     private void Start()
     {/*
         roundStart = Time.time;
@@ -88,6 +111,12 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
 
     void Update()
     {
+
+        if (roundTimeRemaining <= 0)
+        {
+            endRound();
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (packageEnties.Exists(m => m.IsOnTable()))
@@ -181,13 +210,10 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
                 DestroySpawnedPackage(package);
             }
         }
-        if (roundTimeRemaining <= 0) {
-            endRound();
-        }
     }
 
-    public void endRound() { 
-        
+    public void endRound() {
+        //TODO send playerDataDict to next scene
     }
 
     public void AddSpawnedPackage(Package spawnedPackage) 
@@ -221,7 +247,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         return UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
     }
 
-    public void HandleMailPlacedInSlot(Destination type, Package package,int player = 0) {
+    public void HandleMailPlacedInSlot(Destination type, Package package, PlayerType player) {
         if (type == Destination.Trash) {
             DestroySpawnedPackage(package);
             return;
@@ -233,6 +259,26 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         }
         foreach (Package oldPackage in packageList) {
             oldPackage.ReduceSortOrder();
+        }
+        PlayerData playerData;
+        if (!playerDataDict.TryGetValue(player, out playerData))
+        {
+            Debug.LogError("player score not found in playerDataDict, score not tracked");
+            packageList.Add(package);
+            return;
+        }
+
+        if (package.Destination == type)
+        {
+            playerData.correctlyDeliveredPackages += 1;
+
+        }
+        else if (package.SecretDestination == type)
+        {
+            playerData.secretMissionPackages += 1;
+        }
+        else {
+            playerData.misdeliveredPackages += 1;
         }
         packageList.Add(package);
     }
