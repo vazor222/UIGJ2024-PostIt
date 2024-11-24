@@ -94,12 +94,17 @@ public class Package : MonoBehaviour
             {
                 currentPosition = mailSlot.slot.transform.position;
                 //TODO inform that this mail is in this slot
+                transform.position = currentPosition;
+                gameObject.layer = 6;
+                Land();
+                spriteRenderer.sortingOrder -= 1;
+                return;
             }
         }
-        transform.position = currentPosition;
-
         rb.gravityScale = gravity;
+        transform.position = currentPosition;
         spriteRenderer.sortingOrder = currentSortingOrder;
+        gameObject.layer = 0;
     }
     #endregion
 }
