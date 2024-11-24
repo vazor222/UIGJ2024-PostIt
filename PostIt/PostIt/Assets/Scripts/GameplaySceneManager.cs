@@ -35,6 +35,7 @@ public enum PlayerType {
     Mouse
 }
 
+[Serializable]
 public struct MisdeliveredPopup
 {
     public PlayerType player;
