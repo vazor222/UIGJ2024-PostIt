@@ -64,6 +64,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     private float roundStart;
     float roundLen;
     private float roundEnd;
+    public float roundTimeRemaining;
     private List<Package> packageEnties = new List<Package>();
     private IndicatorBounce indicator;
     int keyboardPlayerSelectedPackageIndex = -1;
@@ -180,6 +181,13 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
                 DestroySpawnedPackage(package);
             }
         }
+        if (roundTimeRemaining <= 0) {
+            endRound();
+        }
+    }
+
+    public void endRound() { 
+        
     }
 
     public void AddSpawnedPackage(Package spawnedPackage) 
@@ -213,7 +221,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         return UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
     }
 
-    public void HandleMailPlacedInSlot(Destination type, Package package) {
+    public void HandleMailPlacedInSlot(Destination type, Package package,int player = 0) {
         if (type == Destination.Trash) {
             DestroySpawnedPackage(package);
             return;

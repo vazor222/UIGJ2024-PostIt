@@ -39,6 +39,7 @@ public class Timer : MonoBehaviour
 
         timeRemaining = 0;
         UpdateTimerDisplay();
+        GameplaySceneManager.Instance.roundTimeRemaining = timeRemaining;
         Debug.Log("Timer Finished!");
     }
 
@@ -47,6 +48,6 @@ public class Timer : MonoBehaviour
         int minutes = Mathf.FloorToInt(timeRemaining / 60);
         int seconds = Mathf.FloorToInt(timeRemaining % 60);
 
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        timerText.text = string.Format("{0}:{1:00}", minutes, seconds);
     }
 }
