@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public Text timerText; 
+    public TextMeshPro timerText; 
     private float timeRemaining;
     int currentRound = 0;
 
     void Start()
     {
-        float roundLen;
+        float roundLen = 180;/*
         currentRound = GameManager.Instance.currentRound;
         if (!GameManager.Instance.roundNumToRoundLen.TryGetValue(currentRound, out roundLen))
         {
@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour
             Debug.LogWarning("GameplaySceneManager:Start roundLen has an invalid value of " + roundLen +
                 ", defaulting to 180 seconds");
             roundLen = 180;
-        }
+        }*/
         timeRemaining = roundLen;
         StartCoroutine(StartCountdown());
     }
@@ -39,6 +39,7 @@ public class Timer : MonoBehaviour
 
         timeRemaining = 0;
         UpdateTimerDisplay();
+        GameplaySceneManager.Instance.roundTimeRemaining = timeRemaining;
         Debug.Log("Timer Finished!");
     }
 
@@ -47,6 +48,6 @@ public class Timer : MonoBehaviour
         int minutes = Mathf.FloorToInt(timeRemaining / 60);
         int seconds = Mathf.FloorToInt(timeRemaining % 60);
 
-        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        timerText.text = string.Format("{0}:{1:00}", minutes, seconds);
     }
 }

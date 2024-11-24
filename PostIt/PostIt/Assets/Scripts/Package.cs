@@ -58,7 +58,7 @@ public class Package : MonoBehaviour
     }
     private void Update()
     {
-        if (!isOnTable() && transform.position.y <= tableYPosition) {
+        if (!IsOnTable() && transform.position.y <= tableYPosition) {
             Land();
         }
     }
@@ -117,7 +117,10 @@ public class Package : MonoBehaviour
 
     }
 
-    public bool isOnTable() {
+    public bool IsOnTable() {
+        if (rb is null) {
+            return false;
+        }
         return !isBeingDragged && 
             rb.gravityScale == 0 
             && !inSlot;

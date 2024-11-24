@@ -64,6 +64,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     private float roundStart;
     float roundLen;
     private float roundEnd;
+    public float roundTimeRemaining;
     private List<Package> packageEnties = new List<Package>();
     private IndicatorBounce indicator;
     int keyboardPlayerSelectedPackageIndex = -1;
@@ -89,7 +90,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (packageEnties.Exists(m => m.isOnTable()))
+            if (packageEnties.Exists(m => m.IsOnTable()))
             {
                 // select the next package
                 do
@@ -97,7 +98,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
                     if (++keyboardPlayerSelectedPackageIndex >= packageEnties.Count)
                         keyboardPlayerSelectedPackageIndex = 0;
                 }
-                while (!packageEnties[keyboardPlayerSelectedPackageIndex].isOnTable());
+                while (!packageEnties[keyboardPlayerSelectedPackageIndex].IsOnTable());
                 Package p = packageEnties[keyboardPlayerSelectedPackageIndex];
 
                 // move the indicator to the package
@@ -168,6 +169,27 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         }
     }
 
+    private void FixedUpdate()
+    {
+        foreach (Package package in PackagesOnTable()) {
+            if (package is null)
+            {
+                continue;
+            }
+            else if(package.transform.position.y <= -10)
+            {
+                DestroySpawnedPackage(package);
+            }
+        }
+        if (roundTimeRemaining <= 0) {
+            endRound();
+        }
+    }
+
+    public void endRound() { 
+        
+    }
+
     public void AddSpawnedPackage(Package spawnedPackage) 
     {
         packageEnties.Add(spawnedPackage);
@@ -186,7 +208,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             {
                 continue;
             }
-            if (package.isOnTable()) {
+            if (package.IsOnTable()) {
                 result.Add(package);
             }
         }
@@ -199,7 +221,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         return UnityEngine.Random.Range(bounds.min.y, bounds.max.y);
     }
 
-    public void HandleMailPlacedInSlot(Destination type, Package package) {
+    public void HandleMailPlacedInSlot(Destination type, Package package,int player = 0) {
         if (type == Destination.Trash) {
             DestroySpawnedPackage(package);
             return;
