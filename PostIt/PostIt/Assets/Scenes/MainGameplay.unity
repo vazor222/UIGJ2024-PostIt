@@ -179,8 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66b6cdca6af29ac49897cb987549d365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  packagesToSpawn: 15
-  CooldownTime: 150
+  packagesToSpawn: 360
+  CooldownTime: 50
   spawnZone: {fileID: 73840894}
   spawnedZPos: 0
   SpawnableObjects:

@@ -328,7 +328,15 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
         };
         switch (normalDest) { 
             case Destination.NorthPole:
-                result.secretDestination = Destination.notNorthKorea;
+                float randomValue = UnityEngine.Random.Range(0f, 1f);
+                if (randomValue < 0.5f)
+                {
+                    result.secretDestination = Destination.notNorthKorea;
+                }
+                else
+                {
+                    result.secretDestination = Destination.none;
+                }
                 break;
             default:
                 result.secretDestination = Destination.none;

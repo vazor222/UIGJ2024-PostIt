@@ -51,6 +51,9 @@ public class PackageSpawner : MonoBehaviour
         {
             SpawnPackage();
             packagesToSpawn -= 1;
+            if (CooldownTime > 50) {
+                CooldownTime -= 1;
+            }
             coolDownRemaining = CooldownTime;
         }
     }
