@@ -299,11 +299,9 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             packageList.Add(package);
             return;
         }
-
         if (package.Destination == type)
         {
             playerData.correctlyDeliveredPackages += 1;
-
         }
         else if (package.SecretDestination == type)
         {
@@ -313,6 +311,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
             playerData.misdeliveredPackages += 1;
             ShowMisdeliveredPopup(player);
         }
+        playerDataDict[player] = playerData;
         UpdateWinningAudio();
         packageList.Add(package);
     }
