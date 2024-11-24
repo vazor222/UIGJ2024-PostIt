@@ -12,17 +12,21 @@ public class Package : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
-    private float finalPositionY;
+    public float tableYPosition;
+
+
+    private Vector3 pickupOffset;
+    private bool isBeingDragged = false;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = gameObject.GetComponent<Rigidbody2D>();
-        finalPositionY = GameplaySceneManager.Instance.GetTablePos();
+        tableYPosition = GameplaySceneManager.Instance.GetTablePos();
         UpdateSortingOrder();
     }
     private void Update()
     {
-        if (transform.position.y <= finalPositionY) {
+        if (!isOnTable() && transform.position.y <= tableYPosition) {
             Land();
         }
     }
@@ -31,8 +35,50 @@ public class Package : MonoBehaviour
         currentSortingOrder++;
         spriteRenderer.sortingOrder = currentSortingOrder;
     }
+
+    public bool isOnTable() {
+        return !isBeingDragged && !rb.simulated;
+    }
+
     public void Land() {
         rb.simulated = false;
     }
 
+    #region mouse controls
+    public void OnStartDrag()
+    {
+        Debug.Log("package clicked, starting drag");
+        isBeingDragged = true;
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        pickupOffset = transform.position - mousePosition;
+    }
+
+    public void OnDrag()
+    {
+        if (isBeingDragged)
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0;
+            if (mousePosition.y < tableYPosition) {
+                mousePosition.y = tableYPosition;
+            }
+            transform.position = mousePosition + pickupOffset;
+        }
+    }
+
+    public void OnendDrag()
+    {
+        isBeingDragged = false;
+
+        Vector3 currentPosition = transform.position;
+        if (currentPosition.y < tableYPosition)
+        {
+            currentPosition.y = tableYPosition;
+        }
+        transform.position = currentPosition;
+
+        rb.simulated = true;
+        //TODO Place in box
+    }
+    #endregion
 }
