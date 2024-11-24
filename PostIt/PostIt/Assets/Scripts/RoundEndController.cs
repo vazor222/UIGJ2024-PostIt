@@ -11,6 +11,7 @@ public class RoundEndController : MonoBehaviour
         AudioManager a = FindObjectOfType<AudioManager>();
         if( a != null )
         {
+            a.StopBGAmbiance();
             a.PlayBGMusic(a.endOfRoundTheme);
         }
     }
