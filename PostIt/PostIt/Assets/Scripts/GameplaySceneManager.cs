@@ -51,7 +51,7 @@ public class GameplaySceneManager : MonoBehaviour, ISingleton<GameplaySceneManag
 
     public Collider2D TableCollider { get; internal set; }
     public List<MailSlotMarker> mailSlotMarkers;
-    public Dictionary<Destination, List<Package>> MailInSlots;
+    public Dictionary<Destination, List<Package>> MailInSlots = new Dictionary<Destination, List<Package>>();
 
     int currentRound = 0;
     private float roundStart;
