@@ -210,6 +210,9 @@ public class Package : MonoBehaviour
 
     public void PlaceInSlot(Vector2 currentPosition, Destination type, PlayerType player = PlayerType.Keyboard)
     {
+        if (slot != Destination.none) {
+            RemovefromSlot();
+        }
         setSortingOrder(5);
         transform.position = currentPosition;
         gameObject.layer = 6;

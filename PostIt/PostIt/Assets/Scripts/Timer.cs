@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour
 
     void Start()
     {
-        float roundLen = 180;/*
+        float roundLen = 12;/*
         currentRound = GameManager.Instance.currentRound;
         if (!GameManager.Instance.roundNumToRoundLen.TryGetValue(currentRound, out roundLen))
         {
